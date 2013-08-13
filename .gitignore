@@ -1,4 +1,18 @@
 
 userspace/i2c/bmp085/.cproject
 
+userspace/i2c/bmp085/.project
+
 userspace/i2c/hih6130/.cproject
+
+userspace/i2c/hih6130/.project
+
+userspace/i2c/.metadata
+
+userspace/i2c/RemoteSystemsTempFiles
+
+userspace/i2c/24AAxxx/.cproject
+
+userspace/i2c/24AAxxx/.project
+
+.DS_Store
