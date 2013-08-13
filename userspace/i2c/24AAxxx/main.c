@@ -38,50 +38,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../lib/lib24AAxxx.h"
+#include "lib24AAxxx.h"
 
 int main(int argc, char **argv) {
 
-	unsigned short adresse;
+	__u16 adresse;
 
 	adresse = 1;
 
 	int fd;
 
-	char sector[2];
+	char sector[3];
 
-	char rbyte[2];
+	char rbyte[1];
 	char wbyte[1];
 
 
-	wbyte[0] = 9;
 
 
+
+
+	printf("Sector 1: %x\n", sector[0]);
+	printf("Sector 2: %x\n", sector[1]);
+	printf("Sector 3: %x\n", sector[2]);
+
+
+
+	// Byte Write
 
 	memcpy(sector, &adresse, sizeof adresse);
 
-	e24AA_read(wbyte, adresse);
+	wbyte[0] = 10;
+	sector[2] = 2;
 
-/*
-	memcpy(wbyte, &adresse, sizeof adresse);
-
-	wbyte[2] = 0x06;
-
-	// Byte Write
 	fd = e24AA_i2c_open(0x50);
-
-	write(fd, wbyte, sizeof wbyte);
-	close(fd);
-*/
-	usleep(5000);
-
-	// Byte Read
-	fd = e24AA_i2c_open(0x50);
-
 	write(fd, sector, sizeof sector);
 	usleep(5000);
 	read(fd, rbyte, 1);
 	close(fd);
+
+	usleep(5000);
+
+
+	e24AA_read(rbyte, sizeof rbyte, adresse);
 
 	printf("Text: %x\n", rbyte[0]);
 

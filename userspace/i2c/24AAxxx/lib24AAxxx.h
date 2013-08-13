@@ -46,10 +46,11 @@
 #include <sys/ioctl.h>
 #include <linux/types.h>
 
-#include "smbus.h"
+#include "../lib/smbus.h"
 
 static inline int e24AA_i2c_open(__u8 addr);
-int e24AA_read(char *buffer, unsigned short address);
+int e24AA_read(char *buffer, size_t size, __u16 sector);
+int e24AA_write(char *buffer, size_t size, __u16 sector);
 
 
 /** TYPE DEFINITIONS **/
@@ -105,23 +106,31 @@ static inline int e24AA_i2c_open(__u8 addr) {
 }
 
 
-int e24AA_read(char *buffer, unsigned short address) {
+int e24AA_read(char *buffer, size_t size, __u16 sector) {
 
 	int fd;
-	int length = 1; //sizeof buffer;
-	char wbuffer[length+2];
-
-	memcpy(wbuffer, buffer, length);
 
 	// Open i2c line
 	fd = e24AA_i2c_open(e24AA_i2c_address);
 
-	write(fd, wbuffer, sizeof wbuffer);
+	// Select sector
+	write(fd, &sector, 2);
+
+	// Wait until sector is selected
+	usleep(5000);
+
+	// Read from sector
+	read(fd, buffer, size);
 
 	// close i2c line
 	close(fd);
 
-	printf("length: %d\n", sizeof wbuffer);
+	return 0;
+}
+
+
+
+int e24AA_write(char *buffer, size_t size, __u16 sector) {
 
 	return 0;
 }
