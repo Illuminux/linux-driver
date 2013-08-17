@@ -42,47 +42,21 @@
 
 int main(int argc, char **argv) {
 
-	__u16 adresse;
+	__u16 sector_adr = 1;
 
-	adresse = 1;
-
-	int fd;
-
-	char sector[3];
-
-	char rbyte[1];
-	char wbyte[1];
-
-
-
-
-
-
-	printf("Sector 1: %x\n", sector[0]);
-	printf("Sector 2: %x\n", sector[1]);
-	printf("Sector 3: %x\n", sector[2]);
-
-
+	char bytes[] = "Hello World!";
 
 	// Byte Write
+	e24AA_write(sector_adr, bytes, strlen(bytes));
 
-	memcpy(sector, &adresse, sizeof adresse);
+	sleep(1);
 
-	wbyte[0] = 10;
-	sector[2] = 2;
+	// Byte Read
+	char rbyte[12];
 
-	fd = e24AA_i2c_open(0x50);
-	write(fd, sector, sizeof sector);
-	usleep(5000);
-	read(fd, rbyte, 1);
-	close(fd);
+	e24AA_read(sector_adr, rbyte, 12);
 
-	usleep(5000);
-
-
-	e24AA_read(rbyte, sizeof rbyte, adresse);
-
-	printf("Text: %x\n", rbyte[0]);
+	printf("Read: %s\n", rbyte);
 
 	return 0;
 }
