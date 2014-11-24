@@ -78,7 +78,7 @@ int bmp085::get_values(float &pressure, float &temperature, float &altitude) {
 
 	get_values(pressure, temperature);
 
-	altitude = 44330.0f * (1.0f - powf(pressure/1013.25f, 0.1903f));
+	altitude = 44330.0f * (1.0 - powf(pressure/1013.25, 0.1903f));
 
 	return 0;
 }
