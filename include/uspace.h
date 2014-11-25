@@ -48,6 +48,7 @@
 #define USERSPACE_H_
 
 #include <i2c/bmp085.h>
+#include <i2c/bmp180.h>
 #include <i2c/hih6130.h>
 
 #endif /* USERSPACE_H_ */
