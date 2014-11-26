@@ -71,31 +71,9 @@
 #ifndef HIH6130_H_
 #define HIH6130_H_
 
-#include <cstdio>
-#include <fcntl.h>
-#include <errno.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <linux/i2c-dev.h>			// Use libi2c-dev
+#include <i2c/uspace_i2c.h>
 
-class hih6130 {
-
-	/**
-	 * @brief   HIH6130 i2c device number
-	 * @em 0:   /dev/i2c-0
-	 * @em 1:   /dev/i2c-1
-	 * @author  Knut Welzel
-	 */
-	char device[12];
-
-
-	/**
-	 * @brief   HIH6130 i2c bus address.
-	 * @note    The default address is 0x27
-	 * @author Knut Welzel
-	 */
-	__u8 address;
+class hih6130: public uspace_i2c {
 
 public:
 
@@ -189,15 +167,6 @@ private:
 	 * @param  data Empty array
 	 */
 	void calc_hex_humidity(float humidity, __u8 *data);
-
-
-	/**
-	 * @brief  Open a connection a i2C connection
-	 * @param  fd The i2c descriptor as an integer
-	 * @return Error Code
-	 * @author Knut Welzel
-	 */
-	int i2c_open(int &fd);
 };
 
 

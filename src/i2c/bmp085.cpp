@@ -187,25 +187,3 @@ unsigned int bmp085::get_up(int &fd) {
 
 	return up;
 }
-
-
-
-//
-// Read two words from the BMP085 and supply it as a 16 bit integer
-//
-__s32 bmp085::i2c_read_int(int &fd, __u8 reg_no) {
-
-	__s32 data;
-
-	// Read 16bit register value
-	data = i2c_smbus_read_word_data(fd, reg_no);
-
-	// On error close connection
-	if(data < 0) {
-
-		perror("Error while read integer from i2c");
-		return -1;
-	}
-
-	return ((data<<8) & 0xFF00) | ((data>>8) & 0xFF);
-}

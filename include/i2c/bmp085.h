@@ -215,25 +215,6 @@ private:
 	 */
 	unsigned int get_up(int &fd);
 
-
-	/**
-	 * @brief  Open a connection a i2C connection
-	 * @param  fd The i2c descriptor as an integer
-	 * @return Error Code
-	 * @author Knut Welzel
-	 */
-//	int i2c_open(int &fd);
-
-
-	/**
-	 * @brief  Read two words from the BMP085 and supply it as a 16 bit integer
-	 * \param  fd The I2C descriptor as an integer
-	 * \param  reg_no The Register number as an inager
-	 * \return The entry of two registers as an intager
-	 * @author Knut Welzel
-	 */
-	__s32 i2c_read_int(int &fd, __u8 reg_no);
-
 };
 
 
