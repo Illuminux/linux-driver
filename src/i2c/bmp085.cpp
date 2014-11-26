@@ -189,39 +189,6 @@ unsigned int bmp085::get_up(int &fd) {
 }
 
 
-//
-// Open a connection a i2C connection
-int bmp085::i2c_open(int &fd) {
-
-
-	// Open port for reading and writing
-	if((fd = open(device, O_RDWR)) < 0) {
-		fprintf(
-				stderr,
-				"Error while open I2C device %s: %s\n",
-				device,
-				strerror(errno));
-
-		return errno;
-	}
-
-	// Set the port options and set the address of the device
-	if(ioctl(fd, I2C_SLAVE, address) < 0) {
-
-		fprintf(
-				stderr,
-				"Error while open I2C slave 0x%x: %s\n",
-				I2C_SLAVE,
-				strerror(errno));
-
-		close(fd);
-		return errno;
-	}
-
-	return 0;
-}
-
-
 
 //
 // Read two words from the BMP085 and supply it as a 16 bit integer

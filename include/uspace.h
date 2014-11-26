@@ -14,6 +14,11 @@
  * Sections and no cover texts. A copy of the license is included in the
  * section entitled “GNU Free Documentation License”.
  *
+ * This manual is divided in the following sections:
+ * - \subpage BMP085
+ * - \subpage BMP180
+ * - \subpage HIH6130
+ *
  */
 /*
  *  This program is free software: you can redistribute it and/or modify

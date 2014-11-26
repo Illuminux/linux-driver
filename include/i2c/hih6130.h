@@ -1,8 +1,43 @@
 /**
- *  Copyright (C) 2014 Knut Welzel (knut.welzel@googlemail.com)
+ * \page HIH6130 HIH6130 Digital Humidity Sensor
  *
- *  This is a communication library for Honeywell Humidity and
- *  Temperature Sensor HIH6130/6131 Series.
+ * This is a communication library for Honeywell Humidity and
+ * Temperature Sensor HIH6130/6131 Series.
+ *
+ * \li Class: hih6130
+ * \li Header: hih6130.h
+ *
+ * Honeywell HumidIconTM Digital Humidity/Temperature Sensors, HIH6100 Series,
+ * are digital output-type relative humidity (RH) and temperature sensors
+ * combined in the same package.
+ *
+ * \b Example:
+ *
+ * \code{.cpp}
+ *
+ * #include <uspace.h>
+ *
+ * float temp;
+ * float humi;
+ *
+ * int  i2c_dev = 1; 		// /dev/i2c-1
+ *
+ * char i2c_adr = 0x27;		// I2C address of BMP180
+ *
+ * hih6130 hih(i2c_dev, i2c_adr);
+ *
+ * // Read temperature:
+ * hih.get_temperature(temp);
+ *
+ * // Read humidity:
+ * hih.get_humidity(humi);
+ *
+ * // Read temperature and pressure:
+ * hih.get_values(humi, temp);
+ *
+ * \endcode
+ *
+ * \copyright Copyright &copy; 2014 Knut Welzel (knut.welzel@googlemail.com)
  */
 /*
  *  This program is free software: you can redistribute it and/or modify

@@ -1,70 +1,89 @@
 /**
- *  Copyright (C) 2014 Knut Welzel (knut.welzel@googlemail.com)
+ * \page BMP085 BMP085 Digital Pressure Sensor
  *
- *  This is a communication library for BOSCH Barometric Pressure
- *  and Temperature Sensor.
+ * This is a communication library for BOSCH BMP digital barometric Pressure
+ * and Temperature Sensor.
+ *
+ * \li Class: bmp085
+ * \li Header: bmp085.h
+ *
+ * The BMP085 is a high-precision, ultra-low power barometric pressure sensor
+ * for use in advanced mobile applications.
+ *
+ * \b Example:
+ *
+ * \code{.cpp}
+ *
+ * #include <uspace.h>
+ *
+ * float temp;
+ * float pres;
+ * float alti;
+ *
+ * int  i2c_dev = 1; 			// /dev/i2c-1
+ *
+ * char i2c_adr = 0x77;		// I2C address of BMP085
+ *
+ * bmp085 bmp(i2c_dev, i2c_adr, bmp.oversampe_low);
+ *
+ * // Read temperature:
+ *	bmp.get_temperature(temp);
+ *
+ *	// Read pressure:
+ *	bmp.get_pressure(pres);
+ *
+ *	// Read temperature and pressure:
+ *	bmp.get_values(pres, temp);
+ *
+ *	// Read temperature, pressure and altitude:
+ *	bmp.get_values(pres, temp, alti);
+ *
+ * \endcode
+ *
+ * \copyright Copyright &copy; 2014 Knut Welzel (knut.welzel@googlemail.com)
+ *
  */
-/*  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Dieses Programm ist Freie Software: Sie können es unter den Bedingungen
- *  der GNU General Public License, wie von der Free Software Foundation,
- *  Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren
- *  veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+ * Dieses Programm ist Freie Software: Sie können es unter den Bedingungen
+ * der GNU General Public License, wie von der Free Software Foundation,
+ * Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren
+ * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
  *
- *  Dieses Programm wird in der Hoffnung, dass es nützlich sein wird, aber
- *  OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
- *  Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
- *  Siehe die GNU General Public License für weitere Details.
+ * Dieses Programm wird in der Hoffnung, dass es nützlich sein wird, aber
+ * OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+ * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+ * Siehe die GNU General Public License für weitere Details.
  *
- *  Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
- *  Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+ * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+ * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
  *
  */
 
 #ifndef BMP085_H_
 #define BMP085_H_
 
-#include <cstdio>
-#include <fcntl.h>
-#include <errno.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-#include <linux/i2c-dev.h>			// Use libi2c-dev
+#include <i2c/uspace_i2c.h>
 #include <math.h>
 
 /**
  * bmp085
  */
-class bmp085 {
+class bmp085: public uspace_i2c {
 
-	/**
-	 * @brief   BMP085 i2c device number
-	 * @em 0:   /dev/i2c-0
-	 * @em 1:   /dev/i2c-1
-	 * @author  Knut Welzel
-	 */
-	char device[12];
-
-
-	/**
-	 * @brief   BMP085 i2c bus address.
-	 * \note    The default address is 0x77
-	 * 	@author Knut Welzel
-	 */
-	__u8 address;
-
+public:
 
 	/**
 	 * @brief  Define default over sampling to "ultra high resolution"
@@ -78,9 +97,6 @@ class bmp085 {
 	 */
 	unsigned char oversample;
 
-
-public:
-
 	/**
 	 * @brief  Constructor, setups the BMP085
 	 * @param  i2c_dev The number of the i2c device <br>
@@ -88,8 +104,8 @@ public:
 	 * @em 1:  /dev/i2c-1
 	 * @param  i2c_addr The BMP085 i2c bus address (default is 0x77)
 	 * @param  osamp Set over sampling mode.<br>
-	 *         See BMP085 data sheet page 10 "overview of BMP085 over sampling
-	 *         modes":<br>
+	 *        See BMP085 data sheet page 10 "overview of BMP085 over sampling
+	 *        modes":<br>
 	 * @li Low power:  oversampe_low<br>
 	 * @li Default:    oversampe_standard<br>
 	 * @li High:       oversampe_ligh<br>
@@ -136,7 +152,7 @@ public:
 
 	/**
 	 * @brief  Get the pressure in units of 0.01 mbar and the temperature in
-	 *         units of 0.1 deg C.
+	 *        units of 0.1 deg C.
 	 * @param  pressure Pointer to pressure
 	 * @param  temperature Pointer to temperature
 	 * @return Error code
@@ -148,7 +164,7 @@ public:
 
 	/**
 	 * @brief  Get the pressure in units of 0.01 mbar, the temperature in
-	 *         units of 0.1 deg C and altitude in meters.
+	 *        units of 0.1 deg C and altitude in meters.
 	 * @param  pressure    Pointer to pressure
 	 * @param  temperature Pointer to temperature
 	 * @param  altitude    Pointer to altitude
@@ -162,7 +178,7 @@ private:
 
 	/**
 	 * @brief  Calibration values. These values are stored in the EEPROM of the
-	 *         BMP085 sensor.
+	 *        BMP085 sensor.
 	 * @author Knut Welzel
 	 */
 	struct calibration {
@@ -206,7 +222,7 @@ private:
 	 * @return Error Code
 	 * @author Knut Welzel
 	 */
-	int i2c_open(int &fd);
+//	int i2c_open(int &fd);
 
 
 	/**
